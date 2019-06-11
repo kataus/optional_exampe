@@ -18,7 +18,7 @@ public class DryMilkStorageTest {
         assertEquals(newDoseOfMilk, doseOfMilk);
     }
 
-    @Test
+    @Test( expected = RuntimeException.class)
     public void testEmptyDryMilkStorage() {
         DryMilkStorageImpl dryMilkStorage = new DryMilkStorageImpl();
 

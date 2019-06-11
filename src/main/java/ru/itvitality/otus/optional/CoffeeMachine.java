@@ -11,6 +11,8 @@ import ru.itvitality.otus.optional.excuters.impl.MilkDispenserImpl;
 import ru.itvitality.otus.optional.storages.*;
 import ru.itvitality.otus.optional.storages.impl.*;
 
+import java.util.Optional;
+
 public class CoffeeMachine {
     private MoneyStogage moneyStogage;
 
@@ -59,16 +61,23 @@ public class CoffeeMachine {
     }
 
     public CupOfCoffee boilCupOfCoffee() {
-        Coin coin = moneyStogage.getPayment();
-        CupOfCoffee cupOfCoffee = null;
-        if (coin != null) {
-            DoseOfCoffee doseOfCoffee = cofferMill.getCoffeePowder();
-            CupOfHotWater cupOfHotWater = waterHeater.getCupOfHotWater();
-            CupOfMilk cupOfMilk = milkDispenser.getCupOfMilk();
 
-            cupOfCoffee = createCoffee(doseOfCoffee, cupOfHotWater, cupOfMilk);
-        }
-        return cupOfCoffee;
+        Optional<CupOfCoffee> cupOfCoffee1 = moneyStogage.getPayment().map(this::prepareForCoffee);
+        //moneyStogage.getPayment().ifPresentOrElse(this::prepareForCoffee, this::showMessageGiveMeMoney);
+
+      return cupOfCoffee1.get();
+    }
+
+    private void showMessageGiveMeMoney(){
+
+    }
+
+    private CupOfCoffee prepareForCoffee(Coin coin){
+        Optional<DoseOfCoffee> doseOfCoffee = cofferMill.getCoffeePowder();
+        CupOfHotWater cupOfHotWater = waterHeater.getCupOfHotWater();
+        Optional<CupOfMilk> cupOfMilk = milkDispenser.getCupOfMilk();
+
+        return createCoffee(doseOfCoffee.get(), cupOfHotWater, cupOfMilk.get());
     }
 
     private CupOfCoffee createCoffee(DoseOfCoffee doseOfCoffee, CupOfHotWater cupOfHotWater, CupOfMilk cupOfMilk) {

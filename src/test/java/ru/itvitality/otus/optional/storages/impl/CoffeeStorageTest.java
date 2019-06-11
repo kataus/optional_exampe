@@ -8,6 +8,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import ru.itvitality.otus.optional.dto.DoseOfBean;
 import ru.itvitality.otus.optional.storages.CoffeeTank;
 
+import java.util.Optional;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
@@ -33,52 +35,51 @@ public class CoffeeStorageTest {
 
     @Test
     public void allCoffeeStorageIsEmpty() {
-        when(coffeeTank1.getDoseOfBean()).thenReturn(null);
-        when(coffeeTank2.getDoseOfBean()).thenReturn(null);
-        when(coffeeTank3.getDoseOfBean()).thenReturn(null);
+        when(coffeeTank1.getDoseOfBean()).thenReturn(Optional.empty());
+        when(coffeeTank2.getDoseOfBean()).thenReturn(Optional.empty());
+        when(coffeeTank3.getDoseOfBean()).thenReturn(Optional.empty());
 
-        DoseOfBean doseOfBean = coffeeStorage.getCoffeeBeans();
+        Optional<DoseOfBean> doseOfBean = coffeeStorage.getCoffeeBeans();
 
-        assertNull(doseOfBean);
+        assertFalse(doseOfBean.isPresent());
     }
 
     @Test
     public void allCoffeeStorageIsFull() {
         DoseOfBean doseOfBean1 = new DoseOfBean();
-        when(coffeeTank1.getDoseOfBean()).thenReturn(doseOfBean1);
+        when(coffeeTank1.getDoseOfBean()).thenReturn(java.util.Optional.of(doseOfBean1));
 
+        Optional<DoseOfBean> doseOfBean = coffeeStorage.getCoffeeBeans();
 
-        DoseOfBean doseOfBean = coffeeStorage.getCoffeeBeans();
-
-        assertNotNull(doseOfBean);
-        assertEquals(doseOfBean1, doseOfBean);
+        assertTrue(doseOfBean.isPresent());
+        assertEquals(doseOfBean1, doseOfBean.get());
     }
 
     @Test
     public void allCoffeeStorageFisrtTankIsEmpty() {
 
-        when(coffeeTank1.getDoseOfBean()).thenReturn(null);
-        DoseOfBean doseOfBean2 = new DoseOfBean();
+        when(coffeeTank1.getDoseOfBean()).thenReturn(Optional.empty());
+        Optional<DoseOfBean> doseOfBean2 = Optional.of(new DoseOfBean());
+
         when(coffeeTank2.getDoseOfBean()).thenReturn(doseOfBean2);
 
+        Optional<DoseOfBean> doseOfBean = coffeeStorage.getCoffeeBeans();
 
-        DoseOfBean doseOfBean = coffeeStorage.getCoffeeBeans();
-
-        assertNotNull(doseOfBean);
-        assertEquals(doseOfBean2, doseOfBean);
+        assertTrue(doseOfBean.isPresent());
+        assertEquals(doseOfBean2.get(), doseOfBean.get());
     }
 
     @Test
     public void allCoffeeStorageFisrtAndSecondTankIsEmpty() {
 
-        when(coffeeTank1.getDoseOfBean()).thenReturn(null);
-        when(coffeeTank2.getDoseOfBean()).thenReturn(null);
+        when(coffeeTank1.getDoseOfBean()).thenReturn(Optional.empty());
+        when(coffeeTank2.getDoseOfBean()).thenReturn(Optional.empty());
         DoseOfBean doseOfBean3 = new DoseOfBean();
-        when(coffeeTank3.getDoseOfBean()).thenReturn(doseOfBean3);
+        when(coffeeTank3.getDoseOfBean()).thenReturn(java.util.Optional.of(doseOfBean3));
 
-        DoseOfBean doseOfBean = coffeeStorage.getCoffeeBeans();
+        Optional<DoseOfBean> doseOfBean = coffeeStorage.getCoffeeBeans();
 
-        assertNotNull(doseOfBean);
-        assertEquals(doseOfBean3, doseOfBean);
+        assertTrue(doseOfBean.isPresent());
+        assertEquals(doseOfBean3, doseOfBean.get());
     }
 }

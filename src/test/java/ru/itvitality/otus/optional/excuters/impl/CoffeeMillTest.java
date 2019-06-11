@@ -10,7 +10,9 @@ import ru.itvitality.otus.optional.dto.DoseOfCoffee;
 import ru.itvitality.otus.optional.excuters.CofferMill;
 import ru.itvitality.otus.optional.storages.CoffeeStorage;
 
-import static org.junit.Assert.assertNotNull;
+import java.util.Optional;
+
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,18 +31,19 @@ public class CoffeeMillTest {
     @Test
     public void coffeeBeansExists(){
         DoseOfBean doseOfBean = new DoseOfBean();
-        when(coffeeStorage.getCoffeeBeans()).thenReturn(doseOfBean);
+        when(coffeeStorage.getCoffeeBeans()).thenReturn(java.util.Optional.of(doseOfBean));
 
-        DoseOfCoffee coffee = cofferMill.getCoffeePowder();
+        Optional<DoseOfCoffee> coffee = cofferMill.getCoffeePowder();
 
-        assertNotNull(coffee);
+        assertTrue(coffee.isPresent());
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void noCoffeeBeansExists(){
 
-        when(coffeeStorage.getCoffeeBeans()).thenReturn(null);
+        when(coffeeStorage.getCoffeeBeans()).thenReturn(Optional.empty());
 
-        DoseOfCoffee coffee = cofferMill.getCoffeePowder();
+        Optional<DoseOfCoffee> coffee = cofferMill.getCoffeePowder();
+        assertFalse(coffee.isPresent());
     }
 }

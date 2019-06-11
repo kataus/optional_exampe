@@ -8,6 +8,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import ru.itvitality.otus.optional.dto.CupOfWater;
 import ru.itvitality.otus.optional.storages.WaterPipeline;
 
+import java.util.Optional;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
@@ -23,7 +25,7 @@ public class WaterTankTest {
 
         waterTank.setWaterPipeline(waterPipeline);
 
-        when(waterPipeline.getCupOfWater()).thenReturn(null);
+        when(waterPipeline.getCupOfWater()).thenReturn(Optional.empty());
 
         CupOfWater newCupOfWater = waterTank.getCupOfWater();
 
@@ -38,7 +40,7 @@ public class WaterTankTest {
 
         waterTank.setWaterPipeline(waterPipeline);
 
-        when(waterPipeline.getCupOfWater()).thenReturn(null);
+        when(waterPipeline.getCupOfWater()).thenReturn(Optional.empty());
 
         CupOfWater newCupOfWater = waterTank.getCupOfWater();
 
@@ -55,7 +57,7 @@ public class WaterTankTest {
 
         CupOfWater cupOfWater = new CupOfWater();
 
-        when(waterPipeline.getCupOfWater()).thenReturn(cupOfWater);
+        when(waterPipeline.getCupOfWater()).thenReturn(java.util.Optional.of(cupOfWater));
 
         CupOfWater newCupOfWater = waterTank.getCupOfWater();
 
@@ -73,7 +75,7 @@ public class WaterTankTest {
 
         CupOfWater cupOfWater = new CupOfWater();
 
-        when(waterPipeline.getCupOfWater()).thenReturn(cupOfWater);
+        when(waterPipeline.getCupOfWater()).thenReturn(java.util.Optional.of(cupOfWater));
 
         CupOfWater newCupOfWater = waterTank.getCupOfWater();
 

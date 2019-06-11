@@ -11,11 +11,7 @@ public class WaterTankImpl implements WaterTank {
 
     @Override
     public CupOfWater getCupOfWater() {
-        CupOfWater cupOfWater = waterPipeline.getCupOfWater();
-        if (cupOfWater == null) {
-            cupOfWater = this.cupOfWater;
-        }
-        return cupOfWater;
+        return waterPipeline.getCupOfWater().orElse(this.cupOfWater);
     }
 
     public void setCupOfWater(CupOfWater cupOfWater) {

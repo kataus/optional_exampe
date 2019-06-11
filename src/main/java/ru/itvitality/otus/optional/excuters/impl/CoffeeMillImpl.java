@@ -6,13 +6,14 @@ import ru.itvitality.otus.optional.dto.DoseOfCoffee;
 import ru.itvitality.otus.optional.excuters.CofferMill;
 import ru.itvitality.otus.optional.storages.CoffeeStorage;
 
+import java.util.Optional;
+
 public class CoffeeMillImpl implements CofferMill {
     private CoffeeStorage coffeeStorage;
 
     @Override
-    public DoseOfCoffee getCoffeePowder() {
-        DoseOfBean doseOfBean = coffeeStorage.getCoffeeBeans();
-        return mill(doseOfBean);
+    public Optional<DoseOfCoffee> getCoffeePowder() {
+        return coffeeStorage.getCoffeeBeans().map(this::mill);
     }
 
     public void setCoffeeStorage(CoffeeStorage coffeeStorage) {
@@ -20,9 +21,6 @@ public class CoffeeMillImpl implements CofferMill {
     }
 
     private DoseOfCoffee mill(DoseOfBean beans) {
-        if (beans == null){
-            throw new RuntimeException("No beans. I'm crashed");
-        }
         return new DoseOfCoffee(beans);
     }
 }

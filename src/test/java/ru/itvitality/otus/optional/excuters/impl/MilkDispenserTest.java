@@ -12,8 +12,9 @@ import ru.itvitality.otus.optional.storages.DryMilkStorage;
 import ru.itvitality.otus.optional.storages.MilkTank;
 import ru.itvitality.otus.optional.storages.WaterTank;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import java.util.Optional;
+
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -41,13 +42,13 @@ public class MilkDispenserTest {
 
     @Test
     public void weHaveFreshMilk(){
-        CupOfMilk cupOfMilk = new CupOfMilk();
+        Optional<CupOfMilk> cupOfMilk = Optional.of(new CupOfMilk());
         when(milkTank.getCupOfMilk()).thenReturn(cupOfMilk);
 
-        CupOfMilk newCupOfMilk = milkDispenser.getCupOfMilk();
+        Optional<CupOfMilk> newCupOfMilk = milkDispenser.getCupOfMilk();
 
-        assertNotNull(newCupOfMilk);
-        assertEquals(newCupOfMilk, cupOfMilk);
+        assertTrue(newCupOfMilk.isPresent());
+        assertEquals(newCupOfMilk.get(), cupOfMilk);
     }
 
     @Test
@@ -56,9 +57,9 @@ public class MilkDispenserTest {
         when(waterTank.getCupOfWater()).thenReturn(new CupOfWater());
         when(dryMilkStorage.getDoseOfDryMilk()).thenReturn(new DoseOfMilk());
 
-        CupOfMilk cupOfMilk = milkDispenser.getCupOfMilk();
+        Optional<CupOfMilk> cupOfMilk = milkDispenser.getCupOfMilk();
 
-        assertNotNull(cupOfMilk);
+        assertFalse(cupOfMilk.isPresent());
     }
 
     @Test(expected = RuntimeException.class)
@@ -67,7 +68,7 @@ public class MilkDispenserTest {
         when(waterTank.getCupOfWater()).thenReturn(null);
         when(dryMilkStorage.getDoseOfDryMilk()).thenReturn(null);
 
-        CupOfMilk cupOfMilk = milkDispenser.getCupOfMilk();
+        Optional<CupOfMilk> cupOfMilk = milkDispenser.getCupOfMilk();
     }
 
     @Test(expected = RuntimeException.class)
@@ -76,7 +77,7 @@ public class MilkDispenserTest {
         when(waterTank.getCupOfWater()).thenReturn(null);
         when(dryMilkStorage.getDoseOfDryMilk()).thenReturn(new DoseOfMilk());
 
-        CupOfMilk cupOfMilk = milkDispenser.getCupOfMilk();
+        Optional<CupOfMilk> cupOfMilk = milkDispenser.getCupOfMilk();
     }
 
     @Test(expected = RuntimeException.class)
@@ -85,6 +86,6 @@ public class MilkDispenserTest {
         when(waterTank.getCupOfWater()).thenReturn(new CupOfWater());
         when(dryMilkStorage.getDoseOfDryMilk()).thenReturn(null);
 
-        CupOfMilk cupOfMilk = milkDispenser.getCupOfMilk();
+        Optional<CupOfMilk> cupOfMilk = milkDispenser.getCupOfMilk();
     }
 }

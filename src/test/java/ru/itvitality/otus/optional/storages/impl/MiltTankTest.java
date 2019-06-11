@@ -3,6 +3,8 @@ package ru.itvitality.otus.optional.storages.impl;
 import org.junit.Test;
 import ru.itvitality.otus.optional.dto.CupOfMilk;
 
+import java.util.Optional;
+
 import static org.junit.Assert.*;
 
 public class MiltTankTest {
@@ -12,18 +14,18 @@ public class MiltTankTest {
         MilkTankImpl milkTank = new MilkTankImpl();
         CupOfMilk cupOfMilk = new CupOfMilk();
         milkTank.setCupOfMilk(cupOfMilk);
-        CupOfMilk newCupOfMilk = milkTank.getCupOfMilk();
+        Optional<CupOfMilk> newCupOfMilk = milkTank.getCupOfMilk();
 
-        assertNotNull(newCupOfMilk);
-        assertEquals(cupOfMilk, newCupOfMilk);
+        assertTrue(newCupOfMilk.isPresent());
+        assertEquals(cupOfMilk, newCupOfMilk.get());
     }
 
     @Test
     public void testEmptyMilkTank() {
         MilkTankImpl milkTank = new MilkTankImpl();
 
-        CupOfMilk newCupOfMilk = milkTank.getCupOfMilk();
+        Optional<CupOfMilk> newCupOfMilk = milkTank.getCupOfMilk();
 
-        assertNull(newCupOfMilk);
+        assertFalse(newCupOfMilk.isPresent());
     }
 }

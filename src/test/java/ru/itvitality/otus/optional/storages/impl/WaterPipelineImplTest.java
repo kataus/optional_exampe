@@ -3,6 +3,8 @@ package ru.itvitality.otus.optional.storages.impl;
 import org.junit.Test;
 import ru.itvitality.otus.optional.dto.CupOfWater;
 
+import java.util.Optional;
+
 import static org.junit.Assert.*;
 
 public class WaterPipelineImplTest {
@@ -15,10 +17,10 @@ public class WaterPipelineImplTest {
         waterPipeline.setCupOfWater(cupOfWater);
         waterPipeline.setFilterIsActive(true);
 
-        CupOfWater newCupOfWater = waterPipeline.getCupOfWater();
+        Optional<CupOfWater> newCupOfWater = waterPipeline.getCupOfWater();
 
-        assertNotNull(newCupOfWater);
-        assertEquals(newCupOfWater, cupOfWater);
+        assertTrue(newCupOfWater.isPresent());
+        assertEquals(newCupOfWater.get(), cupOfWater);
     }
 
     @Test
@@ -28,9 +30,9 @@ public class WaterPipelineImplTest {
         waterPipeline.setCupOfWater(null);
         waterPipeline.setFilterIsActive(true);
 
-        CupOfWater newCupOfWater = waterPipeline.getCupOfWater();
+        Optional<CupOfWater> newCupOfWater = waterPipeline.getCupOfWater();
 
-        assertNull(newCupOfWater);
+        assertFalse(newCupOfWater.isPresent());
     }
 
     @Test
@@ -40,9 +42,9 @@ public class WaterPipelineImplTest {
         waterPipeline.setCupOfWater(cupOfWater);
         waterPipeline.setFilterIsActive(false);
 
-        CupOfWater newCupOfWater = waterPipeline.getCupOfWater();
+        Optional<CupOfWater> newCupOfWater = waterPipeline.getCupOfWater();
 
-        assertNull(newCupOfWater);
+        assertFalse(newCupOfWater.isPresent());
     }
 
     @Test
@@ -52,8 +54,8 @@ public class WaterPipelineImplTest {
         waterPipeline.setCupOfWater(null);
         waterPipeline.setFilterIsActive(false);
 
-        CupOfWater newCupOfWater = waterPipeline.getCupOfWater();
+        Optional<CupOfWater> newCupOfWater = waterPipeline.getCupOfWater();
 
-        assertNull(newCupOfWater);
+        assertFalse(newCupOfWater.isPresent());
     }
 }

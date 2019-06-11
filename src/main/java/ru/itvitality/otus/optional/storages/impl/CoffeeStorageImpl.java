@@ -3,7 +3,8 @@ package ru.itvitality.otus.optional.storages.impl;
 import ru.itvitality.otus.optional.dto.DoseOfBean;
 import ru.itvitality.otus.optional.storages.CoffeeStorage;
 import ru.itvitality.otus.optional.storages.CoffeeTank;
-import ru.itvitality.otus.optional.storages.impl.CoffeeTankImpl;
+
+import java.util.Optional;
 
 public class CoffeeStorageImpl implements CoffeeStorage {
     private CoffeeTank coffeeTank1;
@@ -11,16 +12,10 @@ public class CoffeeStorageImpl implements CoffeeStorage {
     private CoffeeTank coffeeTank3;
 
     @Override
-    public DoseOfBean getCoffeeBeans() {
-        DoseOfBean doseOfBean = coffeeTank1.getDoseOfBean();
-        if (doseOfBean == null) {
-            doseOfBean = coffeeTank2.getDoseOfBean();
-        }
-        if (doseOfBean == null) {
-            doseOfBean = coffeeTank3.getDoseOfBean();
-        }
-
-        return doseOfBean;
+    public Optional<DoseOfBean> getCoffeeBeans() {
+        return coffeeTank1.getDoseOfBean()
+                .or(() -> coffeeTank2.getDoseOfBean())
+                .or(() -> coffeeTank3.getDoseOfBean());
     }
 
     public void setCoffeeTank1(CoffeeTank coffeeTank1) {

@@ -4,6 +4,8 @@ import org.junit.Test;
 import ru.itvitality.otus.optional.dto.DoseOfBean;
 import ru.itvitality.otus.optional.storages.CoffeeTank;
 
+import java.util.Optional;
+
 import static org.junit.Assert.*;
 
 public class CoffeeTankTest {
@@ -13,18 +15,18 @@ public class CoffeeTankTest {
         CoffeeTankImpl coffeeTank = new CoffeeTankImpl();
         DoseOfBean doseOfBean = new DoseOfBean();
         coffeeTank.setDoseOfBean(doseOfBean);
-        DoseOfBean newDoseOfBean = coffeeTank.getDoseOfBean();
+        Optional<DoseOfBean> newDoseOfBean = coffeeTank.getDoseOfBean();
 
-        assertNotNull(newDoseOfBean);
-        assertEquals(newDoseOfBean, doseOfBean);
+        assertTrue(newDoseOfBean.isPresent());
+        assertEquals(newDoseOfBean.get(), doseOfBean);
     }
 
     @Test
     public void testEmptyCoffeeTank() {
         CoffeeTank coffeeTank = new CoffeeTankImpl();
 
-        DoseOfBean doseOfBean = coffeeTank.getDoseOfBean();
+        Optional<DoseOfBean> doseOfBean = coffeeTank.getDoseOfBean();
 
-        assertNull(doseOfBean);
+        assertFalse(doseOfBean.isPresent());
     }
 }

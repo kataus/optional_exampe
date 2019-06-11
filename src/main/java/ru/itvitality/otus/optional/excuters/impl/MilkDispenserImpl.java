@@ -9,13 +9,18 @@ import ru.itvitality.otus.optional.storages.DryMilkStorage;
 import ru.itvitality.otus.optional.storages.MilkTank;
 import ru.itvitality.otus.optional.storages.WaterTank;
 
+import java.util.Optional;
+
 public class MilkDispenserImpl implements MilkDispenser {
     @Override
-    public CupOfMilk getCupOfMilk() {
-        CupOfMilk cupOfMilk = milkTank.getCupOfMilk();
-        if (cupOfMilk == null) {
+    public Optional<CupOfMilk> getCupOfMilk() {
+        Optional<CupOfMilk> cupOfMilk = milkTank.getCupOfMilk();
+
+
+        if (!cupOfMilk.isPresent()) {
             cupOfMilk = createMilkFromDry();
         }
+
         return cupOfMilk;
     }
 
@@ -31,17 +36,17 @@ public class MilkDispenserImpl implements MilkDispenser {
         this.dryMilkStorage = dryMilkStorage;
     }
 
-    private CupOfMilk createMilkFromDry() {
+    private Optional<CupOfMilk> createMilkFromDry() {
         DoseOfMilk doseOfMilk = dryMilkStorage.getDoseOfDryMilk();
         CupOfWater cupOfWater = waterTank.getCupOfWater();
-        return mix(doseOfMilk, cupOfWater);
+        return Optional.ofNullable(mix(doseOfMilk, cupOfWater));
     }
 
     private CupOfMilk mix(DoseOfMilk doseOfMilk, CupOfWater cupOfWater) {
-        if (doseOfMilk == null || cupOfWater == null){
+        if (doseOfMilk == null || cupOfWater == null) {
             throw new RuntimeException("Ou shit... I'm crashed");
         }
-        return  new CupOfMilk();
+        return new CupOfMilk();
     }
 
     private MilkTank milkTank;
