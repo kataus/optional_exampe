@@ -16,7 +16,6 @@ public class MilkDispenserImpl implements MilkDispenser {
     public Optional<CupOfMilk> getCupOfMilk() {
         Optional<CupOfMilk> cupOfMilk = milkTank.getCupOfMilk();
 
-
         if (!cupOfMilk.isPresent()) {
             cupOfMilk = createMilkFromDry();
         }

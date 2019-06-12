@@ -48,23 +48,23 @@ public class MilkDispenserTest {
         Optional<CupOfMilk> newCupOfMilk = milkDispenser.getCupOfMilk();
 
         assertTrue(newCupOfMilk.isPresent());
-        assertEquals(newCupOfMilk.get(), cupOfMilk);
+        assertEquals(newCupOfMilk.get(), cupOfMilk.get());
     }
 
     @Test
     public void noFreshCanCreateFromDry(){
-        when(milkTank.getCupOfMilk()).thenReturn(null);
+        when(milkTank.getCupOfMilk()).thenReturn(Optional.empty());
         when(waterTank.getCupOfWater()).thenReturn(new CupOfWater());
         when(dryMilkStorage.getDoseOfDryMilk()).thenReturn(new DoseOfMilk());
 
         Optional<CupOfMilk> cupOfMilk = milkDispenser.getCupOfMilk();
 
-        assertFalse(cupOfMilk.isPresent());
+        assertTrue(cupOfMilk.isPresent());
     }
 
     @Test(expected = RuntimeException.class)
     public void noFreshNoDryNoWater(){
-        when(milkTank.getCupOfMilk()).thenReturn(null);
+        when(milkTank.getCupOfMilk()).thenReturn(Optional.empty());
         when(waterTank.getCupOfWater()).thenReturn(null);
         when(dryMilkStorage.getDoseOfDryMilk()).thenReturn(null);
 
@@ -73,7 +73,7 @@ public class MilkDispenserTest {
 
     @Test(expected = RuntimeException.class)
     public void noFreshExistDryNoWater(){
-        when(milkTank.getCupOfMilk()).thenReturn(null);
+        when(milkTank.getCupOfMilk()).thenReturn(Optional.empty());
         when(waterTank.getCupOfWater()).thenReturn(null);
         when(dryMilkStorage.getDoseOfDryMilk()).thenReturn(new DoseOfMilk());
 
@@ -82,7 +82,7 @@ public class MilkDispenserTest {
 
     @Test(expected = RuntimeException.class)
     public void noFreshNoDryExistsWater(){
-        when(milkTank.getCupOfMilk()).thenReturn(null);
+        when(milkTank.getCupOfMilk()).thenReturn(Optional.empty());
         when(waterTank.getCupOfWater()).thenReturn(new CupOfWater());
         when(dryMilkStorage.getDoseOfDryMilk()).thenReturn(null);
 
